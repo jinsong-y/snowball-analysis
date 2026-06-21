@@ -38,45 +38,30 @@ export async function openNewChat(page) {
     console.log('  ✓ 已选择视觉模型');
   }
 
-  // 3. 开启"深度思考" — 点击后验证激活状态
-  // 尝试多种选择器
-  let deepThinkActivated = false;
-  const deepThinkSelectors = [
-    'span:has-text("深度思考")',
-    'button:has-text("深度思考")',
-    'div[role="button"]:has-text("深度思考")',
-    '[class*="deep-think"]',
-    '[class*="deepThink"]',
-    '[class*="think"]',
-  ];
+  // 3. 确认"深度思考"已激活（默认可能是激活状态，不要重复点击！）
+  // DeepSeek 深度思考按钮: div.ds-toggle-button.ds-toggle-button--selected
+  const deepThinkBtn = page.locator('div.ds-toggle-button:has-text("深度思考")');
+  if (await deepThinkBtn.isVisible({ timeout: 5_000 }).catch(() => false)) {
+    const cls = await deepThinkBtn.getAttribute('class').catch(() => '');
+    const pressed = await deepThinkBtn.getAttribute('aria-pressed').catch(() => null);
 
-  for (const sel of deepThinkSelectors) {
-    const btn = page.locator(sel);
-    if (await btn.isVisible({ timeout: 1_000 }).catch(() => false)) {
-      await btn.click();
+    const isSelected = (cls && cls.includes('selected')) || pressed === 'true';
+
+    if (isSelected) {
+      console.log('  ✓ 深度思考已激活（默认状态，无需点击）');
+    } else {
+      // 未激活，点击开启
+      await deepThinkBtn.click();
       await sleep(1500);
-
-      // 检查激活状态：aria-pressed / aria-checked / data-state / class 含 active
-      const pressed = await btn.getAttribute('aria-pressed').catch(() => null);
-      const checked = await btn.getAttribute('aria-checked').catch(() => null);
-      const dataState = await btn.getAttribute('data-state').catch(() => null);
-      const cls = await btn.getAttribute('class').catch(() => '');
-
-      if (pressed === 'true' || checked === 'true' || dataState === 'on' ||
-          (cls && (cls.includes('active') || cls.includes('selected')))) {
-        deepThinkActivated = true;
-        console.log(`  ✓ 已开启深度思考 (${sel})`);
-        break;
+      const newCls = await deepThinkBtn.getAttribute('class').catch(() => '');
+      const newPressed = await deepThinkBtn.getAttribute('aria-pressed').catch(() => null);
+      if ((newCls && newCls.includes('selected')) || newPressed === 'true') {
+        console.log('  ✓ 深度思考已开启');
       } else {
-        // 即使没检测到激活态，也认为已尝试点击
-        console.log(`  ⚠ 深度思考已点击 (${sel})，未检测到明确激活态`);
-        deepThinkActivated = true; // 先继续
-        break;
+        console.log('  ⚠ 深度思考点击后未确认激活');
       }
     }
-  }
-
-  if (!deepThinkActivated) {
+  } else {
     console.log('  ⚠ 未找到深度思考按钮');
   }
 }
@@ -135,41 +120,28 @@ export async function sendPrompt(page, prompt) {
   }
 
   // 尝试多种方式找到并点击发送按钮
+  // DeepSeek 实际发送按钮: div[role="button"].ds-button--primary.ds-button--filled.ds-button--circle
   let sent = false;
 
-  // 策略1: aria-label 匹配
-  const sendBtn1 = page.locator(
-    'button[aria-label*="Send"], button[aria-label*="发送"], div[role="button"][aria-label*="Send"]'
-  );
-  if (await sendBtn1.isVisible({ timeout: 1_000 }).catch(() => false)) {
+  // 策略1: DeepSeek 主发送按钮（primary + filled + circle）
+  const sendBtn1 = page.locator('div[role="button"].ds-button--primary.ds-button--filled.ds-button--circle');
+  if (await sendBtn1.isVisible({ timeout: 2_000 }).catch(() => false)) {
     await sendBtn1.click();
     sent = true;
-    console.log('  ✓ 通过 aria-label 发送');
+    console.log('  ✓ 通过 ds-button--primary 发送');
   }
 
-  // 策略2: 输入框附近的发送按钮（通常紧跟在 textarea 后面）
+  // 策略2: 任何 role=button 且含 primary 的按钮
   if (!sent) {
-    const sendBtn2 = page.locator('textarea ~ button, textarea ~ div[role="button"]');
-    if (await sendBtn2.last().isVisible({ timeout: 1_000 }).catch(() => false)) {
-      await sendBtn2.last().click();
+    const sendBtn2 = page.locator('div[role="button"][class*="primary"]');
+    if (await sendBtn2.isVisible({ timeout: 1_000 }).catch(() => false)) {
+      await sendBtn2.click();
       sent = true;
-      console.log('  ✓ 通过相邻按钮发送');
+      console.log('  ✓ 通过 primary 按钮发送');
     }
   }
 
-  // 策略3: 查找包含 SVG 箭头图标的按钮（发送图标）
-  if (!sent) {
-    const sendBtn3 = page.locator('button:has(svg), div[role="button"]:has(svg)');
-    const count = await sendBtn3.count();
-    if (count > 0) {
-      // 取最后一个有 SVG 的按钮（通常发送按钮在最右边）
-      await sendBtn3.last().click();
-      sent = true;
-      console.log('  ✓ 通过 SVG 图标按钮发送');
-    }
-  }
-
-  // 策略4: 键盘快捷键
+  // 策略3: 键盘快捷键
   if (!sent) {
     await page.keyboard.press('Meta+Enter');
     sent = true;
@@ -264,11 +236,10 @@ export async function extractResponse(page) {
 // -----------------------------------------------------------
 async function extractResponseText(page) {
   return page.evaluate(() => {
-    // 排除侧边栏的关键词
+    // 侧边栏关键词
     const SIDEBAR_KEYWORDS = ['开启新对话', '今天', '昨天', '7 天内', '30 天内', '热门话题', 'Trending'];
 
     function isSidebarText(text) {
-      // 如果包含多个侧边栏关键词，大概率是侧边栏
       let matchCount = 0;
       for (const kw of SIDEBAR_KEYWORDS) {
         if (text.includes(kw)) matchCount++;
@@ -276,64 +247,44 @@ async function extractResponseText(page) {
       return matchCount >= 2;
     }
 
-    // 策略 1: DeepSeek 的 markdown 渲染容器
-    const mdBlocks = document.querySelectorAll('.ds-markdown--block');
-    if (mdBlocks.length > 0) {
-      for (let i = mdBlocks.length - 1; i >= 0; i--) {
-        const text = mdBlocks[i].innerText?.trim();
-        if (text && text.length > 50 && !isSidebarText(text)) return text;
-      }
+    // 策略 1: ds-assistant-message-main-content — 最终回复（不含思考过程）
+    const mainContents = document.querySelectorAll('.ds-assistant-message-main-content');
+    if (mainContents.length > 0) {
+      const last = mainContents[mainContents.length - 1];
+      const text = last.innerText?.trim();
+      if (text && text.length > 0) return text;
     }
 
-    // 策略 2: ds-markdown 相关容器
-    const markdownContainers = document.querySelectorAll('[class*="ds-markdown"]');
-    if (markdownContainers.length > 0) {
-      for (let i = markdownContainers.length - 1; i >= 0; i--) {
-        const text = markdownContainers[i].innerText?.trim();
-        if (text && text.length > 50 && !isSidebarText(text)) return text;
-      }
-    }
-
-    // 策略 3: 通过"复制"按钮定位回复区域
-    const copyBtns = document.querySelectorAll('button, div[role="button"]');
-    for (const btn of copyBtns) {
-      const label = btn.getAttribute('aria-label') || btn.textContent || '';
-      if (label.includes('Copy') || label.includes('复制')) {
-        let parent = btn.parentElement;
-        for (let depth = 0; depth < 10 && parent; depth++) {
-          const text = parent.innerText?.trim();
-          if (text && text.length > 200 && !isSidebarText(text)) {
-            return text;
+    // 策略 2: div.ds-message — assistant 消息容器（含思考+回复）
+    const dsMessages = document.querySelectorAll('div.ds-message');
+    for (let i = dsMessages.length - 1; i >= 0; i--) {
+      const text = dsMessages[i].innerText?.trim();
+      // 排除用户消息（不包含"已思考"或 markdown 内容）
+      if (text && text.length > 10 && !isSidebarText(text)) {
+        // 如果包含"已思考"，去掉思考过程，只保留回复部分
+        if (text.includes('已思考')) {
+          // 找到思考过程结束后的内容
+          const parts = text.split('\n\n');
+          // 最后一个非空部分通常是回复
+          for (let j = parts.length - 1; j >= 0; j--) {
+            const part = parts[j].trim();
+            if (part.length > 0 && !part.startsWith('已思考')) {
+              return part;
+            }
           }
-          parent = parent.parentElement;
         }
+        return text;
       }
     }
 
-    // 策略 4: main/chat 区域中的大段文本
-    const mainContent = document.querySelector('main, [class*="chat"], [class*="conversation"]');
-    if (mainContent) {
-      const divs = mainContent.querySelectorAll('div');
-      for (let i = divs.length - 1; i >= 0; i--) {
-        const text = divs[i].innerText?.trim();
-        if (text && text.length > 200 && !isSidebarText(text)) {
-          return text;
-        }
-      }
+    // 策略 3: ds-markdown 容器
+    const mdBlocks = document.querySelectorAll('[class*="ds-markdown"]');
+    for (let i = mdBlocks.length - 1; i >= 0; i--) {
+      const text = mdBlocks[i].innerText?.trim();
+      if (text && text.length > 10 && !isSidebarText(text)) return text;
     }
 
-    // 策略 5: 全页面 fallback — 排除侧边栏
-    const allDivs = document.querySelectorAll('div');
-    let best = '';
-    for (const div of allDivs) {
-      const cls = div.className || '';
-      if (cls.includes('sidebar') || cls.includes('nav') || cls.includes('menu')) continue;
-      const text = div.innerText?.trim() || '';
-      if (text.length > best.length && text.length > 200 && !isSidebarText(text)) {
-        best = text;
-      }
-    }
-    return best;
+    return '';
   });
 }
 
