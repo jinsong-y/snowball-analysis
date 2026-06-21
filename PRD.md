@@ -1,10 +1,10 @@
-# PRD: 雪球热股 AI 自动选股工作流
+# 产品需求文档：雪球热股 AI 自动选股工作流
 
-## Problem Statement
+## 问题描述
 
 作为个人投资者，我每天需要从雪球热股 Top50 中筛选值得投资的股票。当前流程是手动逐只打开股票页面、截图K线、再发给 DeepSeek AI 分析——每只股票耗时3-5分钟，50只股票需要2-3小时，且容易遗漏、无法回溯。我需要一个自动化工具，能批量完成"抓取热股→截图K线→AI分析→生成报告"的全流程，并支持中断续跑，让我每天收盘后一键获取完整的选股分析报告。
 
-## Solution
+## 解决方案
 
 一个基于 Playwright 浏览器自动化的 Node.js 命令行工具，连接用户已登录的 Chrome 浏览器，依次完成：
 1. 从雪球热股页面抓取 Top50 股票列表
@@ -13,79 +13,79 @@
 4. 每只股票的分析结果保存为独立 md 文件
 5. 最终生成汇总表，一眼扫完全部定性建议
 
-全程显示进度和 ETA，支持断点续传。
+全程显示进度和预计剩余时间，支持断点续传。
 
-## User Stories
+## 用户故事
 
-1. As an investor, I want to run a single command to scrape the top 50 hot stocks from Xueqiu, so that I don't have to manually browse and copy stock codes
-2. As an investor, I want the tool to connect to my already-logged-in Chrome browser, so that I don't need to re-authenticate on Xueqiu or DeepSeek
-3. As an investor, I want the stock list saved as a dated markdown file, so that I can reference which stocks were hot on any given day
-4. As an investor, I want each stock's daily K-line chart screenshotted from Xueqiu, including the stock info header (price, PE, market cap, turnover), so that the AI has complete data to analyze
-5. As an investor, I want each stock's weekly K-line chart screenshotted separately, so that the AI can assess medium-term trends
-6. As an investor, I want the K-line screenshots to include MACD indicator area, so that the AI can evaluate momentum signals
-7. As an investor, I want the K-line tab switched via the `data-period` attribute button, so that the correct chart period is displayed before screenshot
-8. As an investor, I want both daily and weekly screenshots sent together to DeepSeek in one message, so that the AI can cross-reference short and medium-term patterns
-9. As an investor, I want a new DeepSeek chat created for each stock, so that there's no context contamination between analyses
-10. As an investor, I want the analysis prompt (my custom stock-picking system rules) automatically sent with each stock's screenshots, so that the AI applies consistent criteria
-11. As an investor, I want the DeepSeek AI response fully extracted and saved to a markdown file, so that I can review the analysis later
-12. As an investor, I want each result file to include the stock screenshots as embedded images, so that I can visually verify the AI's analysis
-13. As an investor, I want each result file to contain the AI's actionable buy/sell/hold recommendation with specific price points, so that I can make trading decisions
-14. As an investor, I want a summary table generated at the end showing all 50 stocks with their verdicts, so that I can quickly scan for opportunities
-15. As an investor, I want the tool to track processing state in a JSON file, so that if the process crashes or I stop it, I can resume from where I left off
-16. As an investor, I want to see real-time progress (e.g., "Processing 12/50: 贵州茅台") and estimated time remaining, so that I know how long the full run will take
-17. As an investor, I want sufficient wait time between each browser action, so that pages load completely and the tool doesn't fail due to timing issues
-18. As an investor, I want the tool to work in serial mode (one stock at a time), so that each stock gets full attention and partial results are always available
-19. As an investor, I want to be able to run the tool for a single stock by code (e.g., `--code=SH600519`), so that I can re-analyze or test individual stocks
-20. As an investor, I want screenshots saved with descriptive filenames (date_code_name_period.png), so that I can manually browse the screenshot directory
-21. As an investor, I want the stock list file to include clickable links to Xueqiu stock pages, so that I can quickly open any stock manually
-22. As an investor, I want the tool to handle errors gracefully (e.g., page load failure, DeepSeek timeout), so that one failed stock doesn't crash the entire run
-23. As an investor, I want failed stocks logged and reported at the end, so that I know which ones to retry
+1. 作为投资者，我希望运行一条命令就能从雪球抓取热股 Top50，省去手动浏览和复制股票代码的麻烦
+2. 作为投资者，我希望工具能连接我已经登录好的 Chrome 浏览器，不需要在雪球或 DeepSeek 上重新登录
+3. 作为投资者，我希望股票列表保存为带日期的 markdown 文件，方便回溯任意一天的热股数据
+4. 作为投资者，我希望每只股票的日K截图包含股票信息头（价格、PE、市值、换手率等），让 AI 有完整数据进行分析
+5. 作为投资者，我希望每只股票的周K单独截图，让 AI 能评估中长期趋势
+6. 作为投资者，我希望K线截图包含 MACD 指标区域，让 AI 能判断动量信号
+7. 作为投资者，我希望通过 `data-period` 属性按钮切换K线周期，确保截图前显示正确的图表
+8. 作为投资者，我希望日K和周K截图一起发给 DeepSeek，让 AI 能交叉对比短线和中线走势
+9. 作为投资者，我希望每只股票在 DeepSeek 上开新对话，避免不同股票之间的上下文污染
+10. 作为投资者，我希望分析提示词（我的选股系统规则）随截图一起自动发送，确保 AI 使用统一标准
+11. 作为投资者，我希望 DeepSeek 的回复被完整提取并保存为 markdown 文件，方便事后回顾
+12. 作为投资者，我希望每个结果文件包含截图的嵌入引用，方便我手动验证 AI 的分析
+13. 作为投资者，我希望每个结果文件包含可操作的买入/卖出/持有建议和具体点位，方便做交易决策
+14. 作为投资者，我希望最后生成一张汇总表，展示全部50只股票的定性结论，快速筛选机会
+15. 作为投资者，我希望工具用 JSON 文件跟踪处理进度，崩溃或中断后能从断点继续
+16. 作为投资者，我希望运行时看到实时进度（如"正在处理 12/50: 贵州茅台"）和预计剩余时间，掌握整体耗时
+17. 作为投资者，我希望每个浏览器操作之间有充足的等待时间，确保页面完全加载，避免因时序问题失败
+18. 作为投资者，我希望工具以串行模式运行（一次处理一只），确保每只股票都得到完整处理，且随时有部分结果可用
+19. 作为投资者，我希望支持按股票代码单独运行（如 `--code=SH600519`），方便重跑或测试单只股票
+20. 作为投资者，我希望截图以描述性文件名保存（日期_代码_名称_周期.png），方便手动浏览截图目录
+21. 作为投资者，我希望股票列表文件包含雪球页面的可点击链接，方便手动打开任意股票
+22. 作为投资者，我希望工具能优雅处理错误（如页面加载失败、DeepSeek 超时），单只失败不影响整体运行
+23. 作为投资者，我希望失败的股票在最后被记录和报告，知道哪些需要重试
 
-## Implementation Decisions
+## 实现决策
 
-### Browser Connection (CDP)
+### 浏览器连接（CDP）
 
-The tool connects to the user's existing Chrome instance via Chrome DevTools Protocol (CDP). The user launches Chrome with `--remote-debugging-port=9222`, and Playwright connects to it using `chromium.connectOverCDP()`. This reuses all existing cookies, login sessions, and browser extensions.
+工具通过 Chrome DevTools Protocol（CDP）连接用户已有的 Chrome 实例。用户用 `--remote-debugging-port=9222` 启动 Chrome，Playwright 通过 `chromium.connectOverCDP()` 连接。这样可以复用所有已有的 cookie、登录会话和浏览器扩展。
 
-A helper shell script (`start-chrome-debug.sh`) should be provided to simplify launching Chrome in debug mode.
+提供一个辅助脚本（`start-chrome-debug.sh`）简化 Chrome 调试模式的启动。
 
-### Xueqiu Scraping
+### 雪球数据抓取
 
-The hot stock page at the provided URL is scraped to extract stock codes and names. Stock links follow the pattern `/S/{exchange}{code}` where exchange is `SH` (Shanghai) or `SZ` (Shenzhen). The page may require scrolling to load all 50 stocks.
+从用户提供的 URL 抓取热股页面，提取股票代码和名称。股票链接格式为 `/S/{交易所}{代码}`，其中交易所为 `SH`（上海）或 `SZ`（深圳）。页面可能需要滚动才能加载全部50只股票。
 
-### Xueqiu Stock Page Screenshot Scope
+### 雪球股票页截图范围
 
-Each stock's screenshot must capture:
-- **Stock info header**: current price, change %, high/low, open, volume, turnover, PE (TTM/ dynamic/static), PB, market cap, turnover rate
-- **K-line chart area**: candlestick chart with moving averages
-- **Volume area**: below the K-line chart
-- **Technical indicators**: MACD area (DIF, DEA, histogram)
+每只股票的截图必须包含：
+- **股票信息头**：当前价格、涨跌幅、最高/最低、今开、成交量、成交额、PE（TTM/动态/静态）、PB、总市值、换手率
+- **K线图区域**：带均线的蜡烛图
+- **成交量区域**：K线图下方
+- **技术指标**：MACD 区域（DIF、DEA、柱状图）
 
-The K-line period is switched via buttons with `data-period` attribute. Screenshot captures the full visible viewport (not just the chart canvas) to include the info header.
+K线周期通过 `data-period` 属性按钮切换。截图捕获整个可见视口（不仅仅是图表 canvas），以包含信息头。
 
-### State Management
+### 状态管理
 
-A JSON state file (`state-YYYY-MM-DD.json`) tracks per-stock progress:
+JSON 状态文件（`state-YYYY-MM-DD.json`）跟踪每只股票的进度：
 
 ```
-Status flow: pending → screenshots_done → analyzing → done
+状态流转：pending → screenshots_done → analyzing → done
 ```
 
-On restart, the tool reads the state file and skips stocks with status `done`. Stocks in `analyzing` state are reset to `screenshots_done` (since the DeepSeek response was interrupted). The state file is written after each state transition.
+重启时，工具读取状态文件，跳过状态为 `done` 的股票。状态为 `analyzing` 的股票重置为 `screenshots_done`（因为 DeepSeek 回复被中断）。每次状态转换后立即写入状态文件。
 
-### DeepSeek Web Interaction
+### DeepSeek 网页交互
 
-For each stock:
-1. Navigate to `chat.deepseek.com` (new chat)
-2. Upload both screenshots via the file input
-3. Fill the textarea with the analysis prompt + stock name
-4. Click send button
-5. Poll for response completion: check for "stop" button disappearance + response text stability
-6. Extract the last assistant message from the DOM
+每只股票的操作流程：
+1. 导航到 `chat.deepseek.com`（新对话）
+2. 通过文件上传控件上传两张截图
+3. 在输入框填写分析提示词 + 股票名称
+4. 点击发送按钮
+5. 轮询等待回复完成：检测"停止"按钮消失 + 回复文本长度稳定
+6. 从 DOM 提取最后一条 AI 回复
 
-### Progress Display
+### 进度显示
 
-Console output shows:
+控制台输出示例：
 ```
 [16:30:15] [12/50] 贵州茅台 (SH600519) — 截图中...
 [16:30:25] [12/50] 贵州茅台 (SH600519) — 等待AI分析...
@@ -93,9 +93,9 @@ Console output shows:
 [16:32:30] 进度: 12/50 (24%) | 已用时: 32m15s | 预计剩余: 1h42m | 速度: 2.5min/只
 ```
 
-ETA is calculated using a rolling average of the last 5 completed stocks.
+ETA 基于最近5只已完成股票的滚动平均值计算。
 
-### Output Structure
+### 输出结构
 
 ```
 results/YYYY-MM-DD/
@@ -106,66 +106,66 @@ results/YYYY-MM-DD/
 └── 汇总_2026-06-21.md
 ```
 
-Each stock result file contains:
-- Metadata (date, source URL)
-- Embedded screenshot references
-- Full DeepSeek analysis text
-- Action summary table (verdict, buy/sell/stop points)
+每只股票的结果文件包含：
+- 元数据（日期、来源URL）
+- 嵌入的截图引用
+- DeepSeek 完整分析文本
+- 操作建议摘要表（定性结论、买入/止损/止盈点位）
 
-The summary file contains a table with: rank, code, name, verdict, and link to detail file.
+汇总文件包含一张表格：排名、代码、名称、定性结论、详情链接。
 
-### Analysis Prompt
+### 分析提示词
 
-The prompt is a comprehensive stock-picking system with 7 dimensions (trend, volume, momentum, valuation, fundamentals, entry criteria, blacklist). It instructs the AI to:
-1. Check each criterion against the screenshot data
-2. Give a verdict: "稳健低吸" / "短线博弈" / "直接放弃"
-3. Provide specific buy/add/profit/stop price points
+提示词是一套七维选股系统（趋势、量能、技术指标、估值、基本面、入场标准、黑名单），指示 AI：
+1. 逐条核对截图数据与规则
+2. 给出定性结论："稳健低吸" / "短线博弈" / "直接放弃"
+3. 给出具体的买入/补仓/止盈/止损点位
 
-### Dependencies
+### 依赖
 
-- `playwright` — browser automation (connects to existing Chrome via CDP)
-- Node.js ESM modules
-- No API keys required (uses web interfaces)
+- `playwright` — 浏览器自动化（通过 CDP 连接已有 Chrome）
+- Node.js ESM 模块
+- 无需 API Key（使用网页界面）
 
-## Testing Decisions
+## 测试策略
 
-This is a browser automation tool that interacts with live external websites. Traditional unit tests are not practical. Testing approach:
+这是一个与线上外部网站交互的浏览器自动化工具，传统单元测试不适用。测试方式：
 
-1. **Manual smoke test**: Run the tool against a single stock (`--code=SZ300319`) and verify:
-   - Screenshots are captured with correct content
-   - DeepSeek receives the screenshots and returns analysis
-   - Result file is generated with correct format
-   - State file is updated correctly
+1. **手动冒烟测试**：对单只股票运行（`--code=SZ300319`），验证：
+   - 截图内容正确
+   - DeepSeek 收到截图并返回分析
+   - 结果文件格式正确
+   - 状态文件正确更新
 
-2. **Resume test**: Start a run, interrupt it after 2-3 stocks, restart, and verify it skips completed stocks
+2. **断点续传测试**：跑2-3只股票后中断，重启后验证跳过已完成的股票
 
-3. **Error handling test**: Test with an invalid stock code to verify graceful failure
+3. **错误处理测试**：用无效股票代码测试，验证优雅失败
 
-4. **Selector validation**: After initial implementation, manually inspect the Xueqiu and DeepSeek pages to verify CSS selectors are correct. These selectors are the primary fragility point and will need periodic maintenance.
+4. **选择器验证**：实现后手动检查雪球和 DeepSeek 页面，确认 CSS 选择器正确。选择器是最主要的脆弱点，需要定期维护。
 
-## Out of Scope
+## 不在范围内
 
-- **DeepSeek API integration**: The user explicitly chose web interface over API
-- **akshare data + self-rendered charts**: The user explicitly chose Xueqiu web screenshots
-- **Automated scheduling (cron)**: Will be added manually after the tool is verified working
-- **Multi-browser support**: Only Chrome (via CDP) is supported
-- **Stock screening/filtering**: All 50 hot stocks are processed; no pre-filtering
-- **Real-time monitoring**: This is a batch tool, not a live dashboard
-- **Portfolio tracking**: Only generates analysis, does not track positions or P&L
-- **Notification/alerting**: No push notifications when complete (future enhancement)
+- **DeepSeek API 集成**：用户明确选择了网页界面而非 API
+- **akshare 数据 + 自绘K线图**：用户明确选择了雪球网页截图
+- **定时任务（cron）**：工具验证可用后由用户手动设置
+- **多浏览器支持**：仅支持 Chrome（通过 CDP）
+- **股票筛选/过滤**：处理全部50只热股，不预筛选
+- **实时监控**：这是批量工具，不是实时仪表盘
+- **持仓跟踪**：只生成分析，不跟踪持仓或盈亏
+- **消息通知**：完成时不推送通知（后续增强）
 
-## Further Notes
+## 补充说明
 
-### Known Fragility Points
+### 已知脆弱点
 
-1. **Xueqiu page selectors**: The CSS selectors for stock list, chart area, and tab buttons are based on current page structure. Xueqiu may redesign their UI, requiring selector updates.
-2. **DeepSeek DOM selectors**: The chat interface selectors (file upload, send button, response extraction) are based on current DeepSeek UI. These are especially likely to change.
-3. **Timing dependencies**: All wait times are heuristic. Slow network or heavy page load may cause failures. The tool should be conservative with timing.
+1. **雪球页面选择器**：股票列表、图表区域、Tab按钮的 CSS 选择器基于当前页面结构。雪球可能改版，需要更新选择器。
+2. **DeepSeek DOM 选择器**：聊天界面的选择器（文件上传、发送按钮、回复提取）基于当前 DeepSeek UI，尤其可能变化。
+3. **时序依赖**：所有等待时间都是经验值。网络慢或页面加载重可能导致失败。工具应采用保守的时序策略。
 
-### Future Enhancements (Not in this PRD)
+### 后续增强（不在本次 PRD 范围内）
 
-- Add cron-based daily scheduling
-- Push notification (email/WeChat) when complete
-- Historical comparison (compare today's verdict with yesterday's)
-- Export to Excel/CSV format
-- Support for custom stock lists (not just hot stocks)
+- 基于 cron 的每日定时调度
+- 完成后推送通知（邮件/微信）
+- 历史对比（对比今天和昨天的结论）
+- 导出 Excel/CSV 格式
+- 支持自定义股票列表（不限于热股）
