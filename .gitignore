@@ -2,3 +2,5 @@ node_modules/
 .browser-data/
 screenshots/
 results/
+.DS_Store
+state-*.json
