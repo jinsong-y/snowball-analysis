@@ -86,6 +86,8 @@ export async function uploadScreenshots(page, filePaths) {
 // -----------------------------------------------------------
 // 3. sendPrompt — 在输入框填写提示词并发送
 // -----------------------------------------------------------
+const MAX_SEND_RETRIES = 3;
+
 export async function sendPrompt(page, prompt) {
   // 找到输入框
   const textarea = page.locator('textarea');
@@ -93,127 +95,101 @@ export async function sendPrompt(page, prompt) {
     throw new Error('找不到 DeepSeek textarea 输入框');
   }
 
-  // 用 click + type 而非 fill — 确保触发 React 状态更新
-  await textarea.first().click();
-  await sleep(300);
-  // 先清空
-  await page.keyboard.press('Meta+A');
-  await page.keyboard.press('Backspace');
-  await sleep(200);
-  // 逐段输入（playwright 的 type 会触发 keydown/input 事件）
-  await textarea.first().type(prompt, { delay: 5 });
-  await sleep(500);
+  for (let attempt = 1; attempt <= MAX_SEND_RETRIES; attempt++) {
+    // 用 evaluate + nativeInputValueSetter 触发 React 状态更新
+    await textarea.first().click();
+    await sleep(300);
 
-  // 验证输入框有内容
-  const inputVal = await textarea.first().inputValue().catch(() => '');
-  if (inputVal.length === 0) {
-    console.log('  ⚠ 输入框为空，尝试 evaluate 方式填入');
     await textarea.first().evaluate((el, text) => {
-      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-        window.HTMLTextAreaElement.prototype, 'value'
+      const setter = Object.getOwnPropertyDescriptor(
+        HTMLTextAreaElement.prototype, 'value'
       ).set;
-      nativeInputValueSetter.call(el, text);
+      setter.call(el, text);
       el.dispatchEvent(new Event('input', { bubbles: true }));
-      el.dispatchEvent(new Event('change', { bubbles: true }));
     }, prompt);
     await sleep(500);
-  }
 
-  // 尝试多种方式找到并点击发送按钮
-  // DeepSeek 实际发送按钮: div[role="button"].ds-button--primary.ds-button--filled.ds-button--circle
-  let sent = false;
-
-  // 策略1: DeepSeek 主发送按钮（primary + filled + circle）
-  const sendBtn1 = page.locator('div[role="button"].ds-button--primary.ds-button--filled.ds-button--circle');
-  if (await sendBtn1.isVisible({ timeout: 2_000 }).catch(() => false)) {
-    await sendBtn1.click();
-    sent = true;
-    console.log('  ✓ 通过 ds-button--primary 发送');
-  }
-
-  // 策略2: 任何 role=button 且含 primary 的按钮
-  if (!sent) {
-    const sendBtn2 = page.locator('div[role="button"][class*="primary"]');
-    if (await sendBtn2.isVisible({ timeout: 1_000 }).catch(() => false)) {
-      await sendBtn2.click();
-      sent = true;
-      console.log('  ✓ 通过 primary 按钮发送');
+    // 点击发送按钮
+    const sendBtn = page.locator('div[role="button"].ds-button--primary.ds-button--filled.ds-button--circle');
+    if (await sendBtn.isVisible({ timeout: 2_000 }).catch(() => false)) {
+      await sendBtn.click();
+      console.log('  ✓ 通过 ds-button--primary 发送');
+    } else {
+      // fallback: 键盘快捷键
+      await page.keyboard.press('Meta+Enter');
+      console.log('  ✓ 通过 Meta+Enter 发送');
     }
-  }
 
-  // 策略3: 键盘快捷键
-  if (!sent) {
-    await page.keyboard.press('Meta+Enter');
-    sent = true;
-    console.log('  ✓ 通过 Meta+Enter 发送');
-  }
-
-  // 验证消息已发送：等待 textarea 清空
-  if (sent) {
+    // 等待发送确认
     await sleep(1000);
-    const textareaContent = await page.locator('textarea').first().inputValue().catch(() => '');
-    if (textareaContent.length > 0) {
-      console.log('  ⚠ 发送后 textarea 未清空，消息可能未发出');
+
+    // 检查确认条件（任一满足即成功）
+    const textareaContent = await textarea.first().inputValue().catch(() => '');
+    const textareaCleared = textareaContent.length === 0;
+
+    const btnClass = await sendBtn.getAttribute('class').catch(() => '');
+    const buttonDisabled = btnClass.includes('ds-button--disabled');
+
+    if (textareaCleared || buttonDisabled) {
+      console.log('  ✓ 发送确认成功');
+      return;
+    }
+
+    // 发送未确认，准备重试
+    if (attempt < MAX_SEND_RETRIES) {
+      console.log(`  ⚠ 发送未确认，第 ${attempt} 次重试...`);
     }
   }
+
+  throw new Error(`发送失败：重试 ${MAX_SEND_RETRIES} 次后仍未确认发送成功`);
 }
 
 // -----------------------------------------------------------
-// 4. waitForResponse — 轮询等待 AI 回复完成（支持深度思考模式）
+// 4. waitForResponse — 轮询等待 AI 回复完成（DOM 状态判断）
 // -----------------------------------------------------------
-export async function waitForResponse(page) {
-  const { responseTimeout, pollInterval } = DEEPSEEK;
+export async function waitForResponse(page, config) {
+  const { responseTimeout, pollInterval } = config || DEEPSEEK;
   const deadline = Date.now() + responseTimeout;
-
   let stableCount = 0;
-  let lastLen = 0;
 
-  console.log('  等待AI回复（深度思考模式，最长5分钟）...');
+  console.log('  等待AI回复（DOM状态判断，最长300秒）...');
 
   while (Date.now() < deadline) {
     await sleep(pollInterval);
 
-    // 检查是否仍在生成
-    // "停止"按钮可见 = 仍在生成或思考中
+    // 1. 检查"停止生成"按钮是否存在（仍在生成或思考中）
     const stopBtn = page.locator(
-      'button:has-text("Stop"), button:has-text("停止"), div[role="button"]:has-text("Stop"), div[role="button"]:has-text("停止")'
+      'button:has-text("停止生成"), div[role="button"]:has-text("停止生成"), button:has-text("停止"), div[role="button"]:has-text("停止")'
     );
-    const isGenerating = await stopBtn.isVisible({ timeout: 500 }).catch(() => false);
+    const isGenerating = await stopBtn.isVisible().catch(() => false);
 
-    // 检查"思考中"状态（深度思考模式会有思考过程展示）
-    const thinkingIndicator = page.locator(
-      'span:has-text("思考中"), span:has-text("Thinking"), [class*="thinking"]'
+    // 2. 检查发送按钮是否处于 disabled 状态（仍在生成中）
+    const sendBtn = page.locator(
+      'div[role="button"].ds-button--primary.ds-button--filled.ds-button--circle'
     );
-    const isThinking = await thinkingIndicator.isVisible({ timeout: 300 }).catch(() => false);
+    const sendBtnClass = await sendBtn.getAttribute('class').catch(() => '');
+    const isSendDisabled = sendBtnClass.includes('ds-button--disabled');
 
-    // 检查"已深度思考"（思考完成但回复还在生成）
-    const thoughtDone = page.locator(
-      'span:has-text("已深度思考"), span:has-text("思考完成")'
-    );
-    const isThoughtDone = await thoughtDone.isVisible({ timeout: 300 }).catch(() => false);
-
-    if (isGenerating || isThinking) {
+    if (isGenerating || isSendDisabled) {
       stableCount = 0;
-      if (isThinking) {
-        console.log('  ... 思考中...');
-      }
+      console.log('  ... AI 生成中...');
       continue;
     }
 
-    // 读取最后一条 assistant 回复的长度
-    const text = await extractResponseText(page);
-    const currentLen = text.length;
-
-    if (currentLen > 0 && currentLen === lastLen) {
-      stableCount++;
-      if (stableCount >= 3) {
-        console.log('  ✓ AI回复完成');
-        return; // 连续 3 次无变化，视为完成
-      }
-    } else {
-      stableCount = 0;
+    // 3. 检查输入框 placeholder 是否恢复为初始状态
+    const textarea = page.locator('textarea');
+    const placeholder = await textarea.getAttribute('placeholder').catch(() => '');
+    if (placeholder === '请输入你的问题') {
+      console.log('  ✓ AI回复完成');
+      return;
     }
-    lastLen = currentLen;
+
+    // 4. 不确定状态，累加计数
+    stableCount++;
+    if (stableCount >= 3) {
+      console.log('  ✓ AI回复完成（兜底退出）');
+      return;
+    }
   }
 
   throw new Error(`DeepSeek 回复超时（${responseTimeout / 1000}秒）`);
@@ -292,32 +268,66 @@ async function extractResponseText(page) {
 // 6. analyzeStock — 完整分析流程
 // -----------------------------------------------------------
 export async function analyzeStock(page, stock, screenshots) {
-  // 1. 打开新对话 + 选择视觉模型 + 开启深度思考
-  console.log('  打开DeepSeek新对话...');
-  await openNewChat(page);
+  let lastResponse = '';
 
-  // 2. 上传截图
-  if (screenshots && screenshots.length > 0) {
-    console.log(`  上传 ${screenshots.length} 张截图...`);
-    await uploadScreenshots(page, screenshots);
-    console.log('  ✓ 截图已上传');
+  for (let attempt = 1; attempt <= MAX_ANALYZE_RETRIES; attempt++) {
+    // 1. 打开新对话 + 选择视觉模型 + 开启深度思考
+    console.log(`  打开DeepSeek新对话... (第 ${attempt} 次尝试)`);
+    await openNewChat(page);
+
+    // 2. 上传截图
+    if (screenshots && screenshots.length > 0) {
+      console.log(`  上传 ${screenshots.length} 张截图...`);
+      await uploadScreenshots(page, screenshots);
+      console.log('  ✓ 截图已上传');
+    }
+
+    // 3. 拼接提示词
+    const prompt = buildPrompt(stock.name);
+
+    // 4. 发送提示词
+    console.log('  发送分析请求...');
+    await sendPrompt(page, prompt);
+    console.log('  ✓ 已发送');
+
+    // 5. 等待回复完成（深度思考模式可能需要较长时间）
+    await waitForResponse(page);
+
+    // 6. 提取回复
+    const response = await extractResponse(page);
+    lastResponse = response;
+
+    // 7. 检测回复质量
+    if (hasErrorMarker(response)) {
+      console.log(`  ⚠ 检测到错误标记，第 ${attempt} 次重试...`);
+      if (attempt < MAX_ANALYZE_RETRIES) continue;
+      throw new Error(`回复质量不佳：重试 ${MAX_ANALYZE_RETRIES} 次后仍检测到错误标记`);
+    }
+
+    if (response.length < MIN_RESPONSE_LENGTH) {
+      console.log(`  ⚠ 回复过短（${response.length} 字 < ${MIN_RESPONSE_LENGTH} 字），第 ${attempt} 次重试...`);
+      if (attempt < MAX_ANALYZE_RETRIES) continue;
+      throw new Error(`回复截断：重试 ${MAX_ANALYZE_RETRIES} 次后回复长度仍不足 ${MIN_RESPONSE_LENGTH} 字`);
+    }
+
+    // 回复正常
+    return response;
   }
 
-  // 3. 拼接提示词
-  const prompt = buildPrompt(stock.name);
+  // 不应走到这里，但作为安全兜底
+  return lastResponse;
+}
 
-  // 4. 发送提示词
-  console.log('  发送分析请求...');
-  await sendPrompt(page, prompt);
-  console.log('  ✓ 已发送');
+// -----------------------------------------------------------
+// 纯逻辑：检测回复中的错误标记
+// -----------------------------------------------------------
+const ERROR_MARKERS = ['已停止', '已中断', '抱歉', '无法分析'];
+const MIN_RESPONSE_LENGTH = 100;
+const MAX_ANALYZE_RETRIES = 3;
 
-  // 5. 等待回复完成（深度思考模式可能需要较长时间）
-  await waitForResponse(page);
-
-  // 6. 提取回复
-  const response = await extractResponse(page);
-
-  return response;
+export function hasErrorMarker(text) {
+  if (!text || typeof text !== 'string') return false;
+  return ERROR_MARKERS.some((marker) => text.includes(marker));
 }
 
 // -----------------------------------------------------------
