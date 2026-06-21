@@ -1,0 +1,555 @@
+{
+  "date": "2026-06-21",
+  "stocks": {
+    "SH600519": {
+      "name": "1贵州茅台SH6005192771.00热度-2.02%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:42:27.958Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_01_SH600519_1贵州茅台SH6005192771.00热度-2.02%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_01_SH600519_1贵州茅台SH6005192771.00热度-2.02%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/01_SH600519_1贵州茅台SH6005192771.00热度-2.02%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ300319": {
+      "name": "2麦捷科技SZ3003192702.00热度+20.02%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:43:09.727Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_02_SZ300319_2麦捷科技SZ3003192702.00热度+20.02%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_02_SZ300319_2麦捷科技SZ3003192702.00热度+20.02%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/02_SZ300319_2麦捷科技SZ3003192702.00热度+20.02%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ301217": {
+      "name": "3铜冠铜箔SZ3012172101.00热度+10.08%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:43:49.992Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_03_SZ301217_3铜冠铜箔SZ3012172101.00热度+10.08%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_03_SZ301217_3铜冠铜箔SZ3012172101.00热度+10.08%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/03_SZ301217_3铜冠铜箔SZ3012172101.00热度+10.08%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH688146": {
+      "name": "4中船特气SH6881461935.00热度+7.15%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:44:30.841Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_04_SH688146_4中船特气SH6881461935.00热度+7.15%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_04_SH688146_4中船特气SH6881461935.00热度+7.15%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/04_SH688146_4中船特气SH6881461935.00热度+7.15%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ002674": {
+      "name": "5兴业科技SZ0026741794.00热度+10.02%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:45:11.171Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_05_SZ002674_5兴业科技SZ0026741794.00热度+10.02%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_05_SZ002674_5兴业科技SZ0026741794.00热度+10.02%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/05_SZ002674_5兴业科技SZ0026741794.00热度+10.02%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ002384": {
+      "name": "61东山精密SZ0023841631.00热度+6.26%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:45:51.994Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_06_SZ002384_61东山精密SZ0023841631.00热度+6.26%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_06_SZ002384_61东山精密SZ0023841631.00热度+6.26%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/06_SZ002384_61东山精密SZ0023841631.00热度+6.26%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ300308": {
+      "name": "71中际旭创SZ3003081630.00热度+7.19%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:46:32.901Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_07_SZ300308_71中际旭创SZ3003081630.00热度+7.19%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_07_SZ300308_71中际旭创SZ3003081630.00热度+7.19%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/07_SZ300308_71中际旭创SZ3003081630.00热度+7.19%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ002297": {
+      "name": "81博云新材SZ0022971534.00热度+10.01%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:47:12.915Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_08_SZ002297_81博云新材SZ0022971534.00热度+10.01%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_08_SZ002297_81博云新材SZ0022971534.00热度+10.01%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/08_SZ002297_81博云新材SZ0022971534.00热度+10.01%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ300285": {
+      "name": "91国瓷材料SZ3002851515.00热度+14.05%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:47:53.128Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_09_SZ300285_91国瓷材料SZ3002851515.00热度+14.05%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_09_SZ300285_91国瓷材料SZ3002851515.00热度+14.05%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/09_SZ300285_91国瓷材料SZ3002851515.00热度+14.05%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ002851": {
+      "name": "10麦格米特SZ0028511109.00热度+0.34%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:48:33.695Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_10_SZ002851_10麦格米特SZ0028511109.00热度+0.34%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_10_SZ002851_10麦格米特SZ0028511109.00热度+0.34%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/10_SZ002851_10麦格米特SZ0028511109.00热度+0.34%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ000657": {
+      "name": "111中钨高新SZ0006571090.00热度+10.00%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:49:13.890Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_11_SZ000657_111中钨高新SZ0006571090.00热度+10.00%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_11_SZ000657_111中钨高新SZ0006571090.00热度+10.00%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/11_SZ000657_111中钨高新SZ0006571090.00热度+10.00%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ000630": {
+      "name": "121铜陵有色SZ0006301079.00热度+1.19%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:49:54.237Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_12_SZ000630_121铜陵有色SZ0006301079.00热度+1.19%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_12_SZ000630_121铜陵有色SZ0006301079.00热度+1.19%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/12_SZ000630_121铜陵有色SZ0006301079.00热度+1.19%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH603986": {
+      "name": "13兆易创新SH6039861062.00热度+7.33%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:50:35.819Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_13_SH603986_13兆易创新SH6039861062.00热度+7.33%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_13_SH603986_13兆易创新SH6039861062.00热度+7.33%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/13_SH603986_13兆易创新SH6039861062.00热度+7.33%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH600172": {
+      "name": "141黄河旋风SH600172945.00热度+5.34%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:51:19.667Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_14_SH600172_141黄河旋风SH600172945.00热度+5.34%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_14_SH600172_141黄河旋风SH600172945.00热度+5.34%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/14_SH600172_141黄河旋风SH600172945.00热度+5.34%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH601318": {
+      "name": "151中国平安SH601318915.00热度-6.41%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:52:02.193Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_15_SH601318_151中国平安SH601318915.00热度-6.41%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_15_SH601318_151中国平安SH601318915.00热度-6.41%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/15_SH601318_151中国平安SH601318915.00热度-6.41%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ000725": {
+      "name": "16京东方ASZ000725914.00热度-1.50%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:52:44.078Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_16_SZ000725_16京东方ASZ000725914.00热度-1.50%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_16_SZ000725_16京东方ASZ000725914.00热度-1.50%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/16_SZ000725_16京东方ASZ000725914.00热度-1.50%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH600487": {
+      "name": "17亨通光电SH600487904.00热度+0.01%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:53:26.029Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_17_SH600487_17亨通光电SH600487904.00热度+0.01%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_17_SH600487_17亨通光电SH600487904.00热度+0.01%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/17_SH600487_17亨通光电SH600487904.00热度+0.01%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ002837": {
+      "name": "182英维克SZ002837891.00热度-0.34%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:54:06.411Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_18_SZ002837_182英维克SZ002837891.00热度-0.34%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_18_SZ002837_182英维克SZ002837891.00热度-0.34%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/18_SZ002837_182英维克SZ002837891.00热度-0.34%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH600183": {
+      "name": "191生益科技SH600183862.00热度+2.06%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:54:47.265Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_19_SH600183_191生益科技SH600183862.00热度+2.06%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_19_SH600183_191生益科技SH600183862.00热度+2.06%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/19_SH600183_191生益科技SH600183862.00热度+2.06%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ000858": {
+      "name": "211五粮液SZ000858790.00热度-2.12%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:55:27.635Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_20_SZ000858_211五粮液SZ000858790.00热度-2.12%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_20_SZ000858_211五粮液SZ000858790.00热度-2.12%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/20_SZ000858_211五粮液SZ000858790.00热度-2.12%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH601899": {
+      "name": "221紫金矿业SH601899784.00热度-2.43%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:56:09.077Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_21_SH601899_221紫金矿业SH601899784.00热度-2.43%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_21_SH601899_221紫金矿业SH601899784.00热度-2.43%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/21_SH601899_221紫金矿业SH601899784.00热度-2.43%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH601872": {
+      "name": "23招商轮船SH601872782.00热度+0.23%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:56:50.995Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_22_SH601872_23招商轮船SH601872782.00热度+0.23%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_22_SH601872_23招商轮船SH601872782.00热度+0.23%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/22_SH601872_23招商轮船SH601872782.00热度+0.23%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ300476": {
+      "name": "24胜宏科技SZ300476749.00热度+2.02%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:57:31.609Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_23_SZ300476_24胜宏科技SZ300476749.00热度+2.02%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_23_SZ300476_24胜宏科技SZ300476749.00热度+2.02%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/23_SZ300476_24胜宏科技SZ300476749.00热度+2.02%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH603738": {
+      "name": "251泰晶科技SH603738720.00热度-0.02%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:58:12.080Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_24_SH603738_251泰晶科技SH603738720.00热度-0.02%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_24_SH603738_251泰晶科技SH603738720.00热度-0.02%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/24_SH603738_251泰晶科技SH603738720.00热度-0.02%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ000651": {
+      "name": "261格力电器SZ000651713.00热度-1.16%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:58:58.988Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_25_SZ000651_261格力电器SZ000651713.00热度-1.16%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_25_SZ000651_261格力电器SZ000651713.00热度-1.16%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/25_SZ000651_261格力电器SZ000651713.00热度-1.16%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH600206": {
+      "name": "27有研新材SH600206685.00热度+6.84%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T09:59:40.415Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_26_SH600206_27有研新材SH600206685.00热度+6.84%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_26_SH600206_27有研新材SH600206685.00热度+6.84%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/26_SH600206_27有研新材SH600206685.00热度+6.84%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ300136": {
+      "name": "28信维通信SZ300136641.00热度+1.79%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:00:30.866Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_27_SZ300136_28信维通信SZ300136641.00热度+1.79%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_27_SZ300136_28信维通信SZ300136641.00热度+1.79%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/27_SZ300136_28信维通信SZ300136641.00热度+1.79%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH688008": {
+      "name": "29澜起科技SH688008617.00热度+2.82%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:01:12.182Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_28_SH688008_29澜起科技SH688008617.00热度+2.82%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_28_SH688008_29澜起科技SH688008617.00热度+2.82%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/28_SH688008_29澜起科技SH688008617.00热度+2.82%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH688662": {
+      "name": "301富信科技SH688662591.00热度+5.08%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:01:53.051Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_29_SH688662_301富信科技SH688662591.00热度+5.08%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_29_SH688662_301富信科技SH688662591.00热度+5.08%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/29_SH688662_301富信科技SH688662591.00热度+5.08%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH600392": {
+      "name": "32盛和资源SH600392579.00热度+10.01%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:02:34.660Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_30_SH600392_32盛和资源SH600392579.00热度+10.01%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_30_SH600392_32盛和资源SH600392579.00热度+10.01%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/30_SH600392_32盛和资源SH600392579.00热度+10.01%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH688110": {
+      "name": "332东芯股份SH688110564.00热度+0.99%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:03:22.425Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_31_SH688110_332东芯股份SH688110564.00热度+0.99%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_31_SH688110_332东芯股份SH688110564.00热度+0.99%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/31_SH688110_332东芯股份SH688110564.00热度+0.99%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ003031": {
+      "name": "34中瓷电子SZ003031562.00热度+10.00%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:04:03.039Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_32_SZ003031_34中瓷电子SZ003031562.00热度+10.00%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_32_SZ003031_34中瓷电子SZ003031562.00热度+10.00%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/32_SZ003031_34中瓷电子SZ003031562.00热度+10.00%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ002463": {
+      "name": "352沪电股份SZ002463554.00热度+0.92%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:04:52.164Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_33_SZ002463_352沪电股份SZ002463554.00热度+0.92%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_33_SZ002463_352沪电股份SZ002463554.00热度+0.92%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/33_SZ002463_352沪电股份SZ002463554.00热度+0.92%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ002138": {
+      "name": "363顺络电子SZ002138553.00热度+6.98%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:05:33.850Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_34_SZ002138_363顺络电子SZ002138553.00热度+6.98%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_34_SZ002138_363顺络电子SZ002138553.00热度+6.98%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/34_SZ002138_363顺络电子SZ002138553.00热度+6.98%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH600703": {
+      "name": "371三安光电SH600703547.00热度+2.21%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:06:24.835Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_35_SH600703_371三安光电SH600703547.00热度+2.21%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_35_SH600703_371三安光电SH600703547.00热度+2.21%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/35_SH600703_371三安光电SH600703547.00热度+2.21%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ300757": {
+      "name": "382罗博特科SZ300757541.00热度+0.88%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:07:06.570Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_36_SZ300757_382罗博特科SZ300757541.00热度+0.88%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_36_SZ300757_382罗博特科SZ300757541.00热度+0.88%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/36_SZ300757_382罗博特科SZ300757541.00热度+0.88%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ002594": {
+      "name": "39比亚迪SZ002594538.00热度+0.75%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:07:46.964Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_37_SZ002594_39比亚迪SZ002594538.00热度+0.75%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_37_SZ002594_39比亚迪SZ002594538.00热度+0.75%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/37_SZ002594_39比亚迪SZ002594538.00热度+0.75%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ002460": {
+      "name": "402赣锋锂业SZ002460529.00热度-2.75%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:08:30.053Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_38_SZ002460_402赣锋锂业SZ002460529.00热度-2.75%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_38_SZ002460_402赣锋锂业SZ002460529.00热度-2.75%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/38_SZ002460_402赣锋锂业SZ002460529.00热度-2.75%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH603629": {
+      "name": "411利通电子SH603629529.00热度+7.00%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:09:10.911Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_39_SH603629_411利通电子SH603629529.00热度+7.00%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_39_SH603629_411利通电子SH603629529.00热度+7.00%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/39_SH603629_411利通电子SH603629529.00热度+7.00%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH688256": {
+      "name": "421寒武纪SH688256518.00热度+14.20%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:09:51.605Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_40_SH688256_421寒武纪SH688256518.00热度+14.20%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_40_SH688256_421寒武纪SH688256518.00热度+14.20%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/40_SH688256_421寒武纪SH688256518.00热度+14.20%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH600160": {
+      "name": "441巨化股份SH600160494.00热度-7.51%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:10:33.118Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_41_SH600160_441巨化股份SH600160494.00热度-7.51%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_41_SH600160_441巨化股份SH600160494.00热度-7.51%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/41_SH600160_441巨化股份SH600160494.00热度-7.51%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ300179": {
+      "name": "454四方达SZ300179492.00热度+5.55%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:11:15.829Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_42_SZ300179_454四方达SZ300179492.00热度+5.55%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_42_SZ300179_454四方达SZ300179492.00热度+5.55%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/42_SZ300179_454四方达SZ300179492.00热度+5.55%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH600584": {
+      "name": "461长电科技SH600584487.00热度+1.55%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:11:56.834Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_43_SH600584_461长电科技SH600584487.00热度+1.55%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_43_SH600584_461长电科技SH600584487.00热度+1.55%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/43_SH600584_461长电科技SH600584487.00热度+1.55%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ002428": {
+      "name": "471云南锗业SZ002428477.00热度+1.19%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:12:37.482Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_44_SZ002428_471云南锗业SZ002428477.00热度+1.19%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_44_SZ002428_471云南锗业SZ002428477.00热度+1.19%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/44_SZ002428_471云南锗业SZ002428477.00热度+1.19%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ000636": {
+      "name": "481风华高科SZ000636474.00热度+0.73%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:13:28.483Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_45_SZ000636_481风华高科SZ000636474.00热度+0.73%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_45_SZ000636_481风华高科SZ000636474.00热度+0.73%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/45_SZ000636_481风华高科SZ000636474.00热度+0.73%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH603773": {
+      "name": "491沃格光电SH603773474.00热度-0.86%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:14:09.184Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_46_SH603773_491沃格光电SH603773474.00热度-0.86%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_46_SH603773_491沃格光电SH603773474.00热度-0.86%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/46_SH603773_491沃格光电SH603773474.00热度-0.86%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH688498": {
+      "name": "506源杰科技SH688498473.00热度+3.81%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:14:50.046Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_47_SH688498_506源杰科技SH688498473.00热度+3.81%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_47_SH688498_506源杰科技SH688498473.00热度+3.81%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/47_SH688498_506源杰科技SH688498473.00热度+3.81%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH600378": {
+      "name": "511昊华科技SH600378466.00热度+2.13%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:15:32.014Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_48_SH600378_511昊华科技SH600378466.00热度+2.13%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_48_SH600378_511昊华科技SH600378466.00热度+2.13%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/48_SH600378_511昊华科技SH600378466.00热度+2.13%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SZ300666": {
+      "name": "521江丰电子SZ300666457.00热度+3.19%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:16:12.909Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_49_SZ300666_521江丰电子SZ300666457.00热度+3.19%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_49_SZ300666_521江丰电子SZ300666457.00热度+3.19%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/49_SZ300666_521江丰电子SZ300666457.00热度+3.19%加自选.md",
+      "conclusion": "待分析"
+    },
+    "SH600036": {
+      "name": "531招商银行SH600036457.00热度-2.54%加自选",
+      "status": "done",
+      "updatedAt": "2026-06-21T10:16:53.228Z",
+      "screenshots": {
+        "dayScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_50_SH600036_531招商银行SH600036457.00热度-2.54%加自选_日K.png",
+        "weekScreenshot": "/Users/jinsong/Downloads/snowball-analysis/screenshots/2026-06-21_50_SH600036_531招商银行SH600036457.00热度-2.54%加自选_周K.png"
+      },
+      "resultFile": "/Users/jinsong/Downloads/snowball-analysis/results/2026-06-21/50_SH600036_531招商银行SH600036457.00热度-2.54%加自选.md",
+      "conclusion": "待分析"
+    }
+  }
+}

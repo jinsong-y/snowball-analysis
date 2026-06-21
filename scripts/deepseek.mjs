@@ -140,35 +140,71 @@ export async function extractResponse(page) {
 // -----------------------------------------------------------
 async function extractResponseText(page) {
   return page.evaluate(() => {
-    // 策略 1: DeepSeek 常见的 markdown 容器
-    const assistantMessages = document.querySelectorAll(
-      '.ds-markdown--block, .markdown-body, [class*="assistant"], [data-role="assistant"]'
-    );
-    if (assistantMessages.length > 0) {
-      return assistantMessages[assistantMessages.length - 1].innerText.trim();
+    // 策略 1: DeepSeek 的 markdown 渲染容器（按回复区域限定）
+    // DeepSeek 的回复通常在一个包含 markdown 的 div 中
+    const mdBlocks = document.querySelectorAll('.ds-markdown--block');
+    if (mdBlocks.length > 0) {
+      // 取最后一个 markdown 块（即最新回复）
+      const lastBlock = mdBlocks[mdBlocks.length - 1];
+      const text = lastBlock.innerText?.trim();
+      if (text && text.length > 50) return text;
     }
 
-    // 策略 2: 聊天消息列表中最后一条非用户消息
-    const allMessages = document.querySelectorAll(
-      '[class*="message"], [class*="chat-message"], [class*="msg"]'
-    );
-    for (let i = allMessages.length - 1; i >= 0; i--) {
-      const msg = allMessages[i];
-      if (!msg.className.includes('user') && msg.innerText.trim().length > 10) {
-        return msg.innerText.trim();
+    // 策略 2: 查找包含 "ds-markdown" 类的容器中的最后一个
+    const markdownContainers = document.querySelectorAll('[class*="ds-markdown"]');
+    if (markdownContainers.length > 0) {
+      // 按 DOM 顺序取最后一个有实质内容的
+      for (let i = markdownContainers.length - 1; i >= 0; i--) {
+        const text = markdownContainers[i].innerText?.trim();
+        if (text && text.length > 50) return text;
       }
     }
 
-    // 策略 3: 通用 — 获取页面中最后一个较长的文本块
-    const blocks = document.querySelectorAll('div, section, article');
-    for (let i = blocks.length - 1; i >= 0; i--) {
-      const text = blocks[i].innerText?.trim();
-      if (text && text.length > 50) {
-        return text;
+    // 策略 3: 通过 "复制" 按钮定位回复区域
+    // DeepSeek 回复下方通常有"复制"按钮，找到它然后获取其父容器的文本
+    const copyBtns = document.querySelectorAll('button, div[role="button"]');
+    for (const btn of copyBtns) {
+      const label = btn.getAttribute('aria-label') || btn.textContent || '';
+      if (label.includes('Copy') || label.includes('复制')) {
+        // 往上找包含回复文本的容器
+        let parent = btn.parentElement;
+        for (let depth = 0; depth < 10 && parent; depth++) {
+          const text = parent.innerText?.trim();
+          if (text && text.length > 200) {
+            // 去掉按钮文字等干扰
+            return text;
+          }
+          parent = parent.parentElement;
+        }
       }
     }
 
-    return '';
+    // 策略 4: 找聊天区域中最后一条大段文本（排除侧边栏和输入区域）
+    // DeepSeek 主内容区域通常在 main 或某个特定容器中
+    const mainContent = document.querySelector('main, [class*="chat"], [class*="conversation"]');
+    if (mainContent) {
+      const divs = mainContent.querySelectorAll('div');
+      for (let i = divs.length - 1; i >= 0; i--) {
+        const text = divs[i].innerText?.trim();
+        if (text && text.length > 200 && !text.includes('热门话题') && !text.includes('Trending')) {
+          return text;
+        }
+      }
+    }
+
+    // 策略 5: 全页面 fallback — 找最大的文本块（排除侧边栏）
+    const allDivs = document.querySelectorAll('div');
+    let best = '';
+    for (const div of allDivs) {
+      // 排除侧边栏和导航
+      const cls = div.className || '';
+      if (cls.includes('sidebar') || cls.includes('nav') || cls.includes('menu')) continue;
+      const text = div.innerText?.trim() || '';
+      if (text.length > best.length && text.length > 200) {
+        best = text;
+      }
+    }
+    return best;
   });
 }
 

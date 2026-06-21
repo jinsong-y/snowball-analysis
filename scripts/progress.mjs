@@ -30,11 +30,12 @@ export function formatDuration(ms) {
 export function createProgressTracker(total) {
   const startTime = Date.now();
   let completed = 0;
+  let displayIndex = 0;
   // 记录最近完成的时间戳，用于滚动平均
   const recentCompletions = []; // {timestamp, duration}[]
 
   /**
-   * 更新进度（一只股票完成）
+   * 更新进度
    * @param {string} stock - 股票名称
    * @param {string} code - 股票代码
    * @param {string} status - 状态描述
@@ -43,18 +44,23 @@ export function createProgressTracker(total) {
   function tick(stock, code, status, duration) {
     const now = new Date();
     const ts = now.toLocaleTimeString('zh-CN');
-    completed++;
 
-    if (duration) {
-      recentCompletions.push({ timestamp: Date.now(), duration });
-      // 只保留最近5只
-      if (recentCompletions.length > 5) {
-        recentCompletions.shift();
+    if (status === 'done' || status === 'error') {
+      completed++;
+      displayIndex = completed;
+      if (duration) {
+        recentCompletions.push({ timestamp: Date.now(), duration });
+        if (recentCompletions.length > 5) {
+          recentCompletions.shift();
+        }
       }
+    } else {
+      // 中间状态用当前处理的序号
+      displayIndex = completed + 1;
     }
 
     const statusIcon = status === 'done' ? '✓' : status === 'error' ? '✗' : '...';
-    console.log(`[${ts}] [${completed}/${total}] ${stock} (${code}) — ${statusIcon} ${status}`);
+    console.log(`[${ts}] [${displayIndex}/${total}] ${stock} (${code}) — ${statusIcon} ${status}`);
   }
 
   /**
