@@ -8,10 +8,10 @@
 //   node scripts/batch.mjs --code=SH600519  # 只处理指定股票
 // ============================================================
 
-import { chromium } from 'playwright';
 import fs from 'fs/promises';
 import path from 'path';
 import { PATHS, XUEQIU, DEEPSEEK, BROWSER, ANALYSIS_PROMPT, today } from './config.mjs';
+import { connectBrowser } from './browser.mjs';
 
 function log(msg) {
   const ts = new Date().toLocaleTimeString('zh-CN');
@@ -236,16 +236,9 @@ async function main() {
   stocks = stocks.slice(opts.start, opts.start + opts.count);
   log(`本次处理: ${stocks.length} 只 (从第 ${opts.start + 1} 只开始)\n`);
 
-  // 启动浏览器
-  log('启动浏览器...');
-  const context = await chromium.launchPersistentContext(BROWSER.userDataDir, {
-    headless: BROWSER.headless,
-    slowMo: BROWSER.slowMo,
-    viewport: BROWSER.viewport,
-    args: ['--disable-blink-features=AutomationControlled'],
-    locale: 'zh-CN',
-  });
-  const page = await context.newPage();
+  // 连接浏览器
+  log('连接浏览器...');
+  const { context, page } = await connectBrowser();
 
   const results = [];
 

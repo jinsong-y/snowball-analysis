@@ -45,8 +45,8 @@ export const BROWSER = {
   headless: false,          // 需要可见浏览器来操作
   slowMo: 300,              // 操作间隔，模拟人类
   viewport: { width: 1920, height: 1080 },
-  // 雪球需要登录cookie才能看到完整数据，先用无登录模式
-  userDataDir: path.join(PROJECT_ROOT, '.browser-data'),
+  cdpPort: 9222,            // Chrome 远程调试端口
+  cdpEndpoint: 'http://localhost:9222',
 };
 
 // --- DeepSeek 提示词 ---

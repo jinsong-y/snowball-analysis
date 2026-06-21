@@ -8,7 +8,8 @@
     "scrape": "node scripts/main.mjs --step=scrape",
     "analyze": "node scripts/main.mjs --step=analyze",
     "batch": "node scripts/batch.mjs",
-    "batch:5": "node scripts/batch.mjs --count=5"
+    "batch:5": "node scripts/batch.mjs --count=5",
+    "test": "node --test"
   },
   "dependencies": {
     "playwright": "^1.61.0"
