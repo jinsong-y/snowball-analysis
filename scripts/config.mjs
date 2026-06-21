@@ -34,10 +34,10 @@ export const XUEQIU = {
 // --- DeepSeek ---
 export const DEEPSEEK = {
   chatUrl: 'https://chat.deepseek.com/',
-  // 等待AI回复的最大时间(ms)
-  responseTimeout: 120_000,
+  // 等待AI回复的最大时间(ms) — 深度思考模式较慢，给300秒
+  responseTimeout: 300_000,
   // 轮询间隔(ms)
-  pollInterval: 3_000,
+  pollInterval: 5_000,
 };
 
 // --- 浏览器 ---

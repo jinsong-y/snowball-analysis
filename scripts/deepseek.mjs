@@ -12,19 +12,38 @@ function sleep(ms) {
 }
 
 // -----------------------------------------------------------
-// 1. openNewChat — 导航到 DeepSeek 并确保新对话
+// 1. openNewChat — 导航到 DeepSeek，开启新对话，选择视觉模型，开启深度思考
 // -----------------------------------------------------------
 export async function openNewChat(page) {
   await page.goto(DEEPSEEK.chatUrl, { waitUntil: 'domcontentloaded' });
-  // 等待页面主要交互元素加载（textarea 或 contenteditable）
+  // 等待页面主要交互元素加载
   await page.waitForSelector('textarea, [contenteditable="true"]', {
     timeout: 30_000,
   });
-  // 点击"新对话"按钮（如果存在）
-  const newChatBtn = page.locator('text=New chat').or(page.locator('text=新对话'));
-  if (await newChatBtn.isVisible({ timeout: 2_000 }).catch(() => false)) {
-    await newChatBtn.click();
-    await page.waitForTimeout(1_000);
+  await sleep(2000);
+
+  // 1. 点击"开启新对话" span
+  const newChatSpan = page.locator('span:has-text("开启新对话")');
+  if (await newChatSpan.isVisible({ timeout: 5_000 }).catch(() => false)) {
+    await newChatSpan.click();
+    await sleep(2000);
+    console.log('  ✓ 已开启新对话');
+  }
+
+  // 2. 选择视觉模型 (data-model-type="vision")
+  const visionModel = page.locator('[data-model-type="vision"]');
+  if (await visionModel.isVisible({ timeout: 5_000 }).catch(() => false)) {
+    await visionModel.click();
+    await sleep(1500);
+    console.log('  ✓ 已选择视觉模型');
+  }
+
+  // 3. 开启"深度思考"
+  const deepThinkBtn = page.locator('span:has-text("深度思考"), button:has-text("深度思考"), [class*="deep-think"]');
+  if (await deepThinkBtn.isVisible({ timeout: 3_000 }).catch(() => false)) {
+    await deepThinkBtn.click();
+    await sleep(1500);
+    console.log('  ✓ 已开启深度思考');
   }
 }
 
@@ -82,7 +101,7 @@ export async function sendPrompt(page, prompt) {
 }
 
 // -----------------------------------------------------------
-// 4. waitForResponse — 轮询等待 AI 回复完成
+// 4. waitForResponse — 轮询等待 AI 回复完成（支持深度思考模式）
 // -----------------------------------------------------------
 export async function waitForResponse(page) {
   const { responseTimeout, pollInterval } = DEEPSEEK;
@@ -91,17 +110,29 @@ export async function waitForResponse(page) {
   let stableCount = 0;
   let lastLen = 0;
 
+  console.log('  等待AI回复（深度思考模式，最长5分钟）...');
+
   while (Date.now() < deadline) {
     await sleep(pollInterval);
 
-    // 检查是否仍在生成（"停止"按钮可见 = 仍在生成）
+    // 检查是否仍在生成
+    // "停止"按钮可见 = 仍在生成或思考中
     const stopBtn = page.locator(
       'button:has-text("Stop"), button:has-text("停止"), div[role="button"]:has-text("Stop"), div[role="button"]:has-text("停止")'
     );
     const isGenerating = await stopBtn.isVisible({ timeout: 500 }).catch(() => false);
 
-    if (isGenerating) {
+    // 检查"思考中"状态（深度思考模式会有思考过程展示）
+    const thinkingIndicator = page.locator(
+      'span:has-text("思考中"), span:has-text("Thinking"), [class*="thinking"]'
+    );
+    const isThinking = await thinkingIndicator.isVisible({ timeout: 300 }).catch(() => false);
+
+    if (isGenerating || isThinking) {
       stableCount = 0;
+      if (isThinking) {
+        console.log('  ... 思考中...');
+      }
       continue;
     }
 
@@ -112,6 +143,7 @@ export async function waitForResponse(page) {
     if (currentLen > 0 && currentLen === lastLen) {
       stableCount++;
       if (stableCount >= 3) {
+        console.log('  ✓ AI回复完成');
         return; // 连续 3 次无变化，视为完成
       }
     } else {
@@ -212,21 +244,26 @@ async function extractResponseText(page) {
 // 6. analyzeStock — 完整分析流程
 // -----------------------------------------------------------
 export async function analyzeStock(page, stock, screenshots) {
-  // 1. 打开新对话
+  // 1. 打开新对话 + 选择视觉模型 + 开启深度思考
+  console.log('  打开DeepSeek新对话...');
   await openNewChat(page);
 
   // 2. 上传截图
   if (screenshots && screenshots.length > 0) {
+    console.log(`  上传 ${screenshots.length} 张截图...`);
     await uploadScreenshots(page, screenshots);
+    console.log('  ✓ 截图已上传');
   }
 
   // 3. 拼接提示词
   const prompt = buildPrompt(stock.name);
 
   // 4. 发送提示词
+  console.log('  发送分析请求...');
   await sendPrompt(page, prompt);
+  console.log('  ✓ 已发送');
 
-  // 5. 等待回复完成
+  // 5. 等待回复完成（深度思考模式可能需要较长时间）
   await waitForResponse(page);
 
   // 6. 提取回复
