@@ -1,0 +1,16 @@
+{
+  "name": "snowball-stock-analysis",
+  "version": "1.0.0",
+  "description": "雪球热股抓取 + K线截图 + DeepSeek AI分析工作流",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/main.mjs",
+    "scrape": "node scripts/main.mjs --step=scrape",
+    "analyze": "node scripts/main.mjs --step=analyze",
+    "batch": "node scripts/batch.mjs",
+    "batch:5": "node scripts/batch.mjs --count=5"
+  },
+  "dependencies": {
+    "playwright": "^1.61.0"
+  }
+}
