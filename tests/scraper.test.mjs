@@ -114,6 +114,32 @@ describe('persist module', () => {
 });
 
 describe('scraper module', () => {
+  // ---- cleanStockName 清理脏数据名称 ----
+  it('cleanStockName 应从脏数据中提取纯中文名称', async () => {
+    const { cleanStockName } = await import('../scripts/scraper.mjs');
+
+    // 雪球页面返回的典型脏数据
+    assert.equal(cleanStockName('1贵州茅台SH6005192771.00热度-2.02%加自选'), '贵州茅台');
+    assert.equal(cleanStockName('10麦格米特SZ0028511109.00热度+0.34%加自选'), '麦格米特');
+    assert.equal(cleanStockName('2麦捷科技SZ3003192702.00热度+20.02%加自选'), '麦捷科技');
+  });
+
+  it('cleanStockName 应保留正常中文名称', async () => {
+    const { cleanStockName } = await import('../scripts/scraper.mjs');
+
+    assert.equal(cleanStockName('贵州茅台'), '贵州茅台');
+    assert.equal(cleanStockName('五粮液'), '五粮液');
+    assert.equal(cleanStockName('中国平安'), '中国平安');
+  });
+
+  it('cleanStockName 应处理空值和边界情况', async () => {
+    const { cleanStockName } = await import('../scripts/scraper.mjs');
+
+    assert.equal(cleanStockName(''), '');
+    assert.equal(cleanStockName(null), '');
+    assert.equal(cleanStockName(undefined), '');
+  });
+
   // ---- scrapeHotStocks 使用 mock page 对象测试 ----
   it('scrapeHotStocks should extract stocks from page', async () => {
     const { scrapeHotStocks } = await import('../scripts/scraper.mjs');

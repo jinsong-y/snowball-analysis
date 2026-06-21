@@ -69,4 +69,26 @@ describe('progress module', () => {
     assert.equal(eta.remaining, 10, 'all should remain');
     assert.equal(eta.estimatedRemainingMs, 0, 'no estimate when no data');
   });
+
+  // 测试5: 计数器只在 done/error 时递增，中间状态不递增
+  it('counter should only increment on done/error, not intermediate states', async () => {
+    const { createProgressTracker } = await import('../scripts/progress.mjs');
+    const tracker = createProgressTracker(5);
+
+    // 模拟一只股票的3个阶段: 截图中 → AI分析中 → done
+    tracker.tick('Stock0', 'SH000000', '截图中...');
+    tracker.tick('Stock0', 'SH000000', 'AI 分析中...');
+    tracker.tick('Stock0', 'SH000000', 'done', 60000);
+
+    // 完成数应为1，不是3
+    const eta = tracker.getETA();
+    assert.equal(eta.remaining, 4, 'remaining should be 4 (only 1 stock done, not 3)');
+
+    // 再处理一只
+    tracker.tick('Stock1', 'SH000001', '截图中...');
+    tracker.tick('Stock1', 'SH000001', 'done', 120000);
+
+    const eta2 = tracker.getETA();
+    assert.equal(eta2.remaining, 3, 'remaining should be 3 after 2 stocks done');
+  });
 });

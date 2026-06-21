@@ -38,12 +38,19 @@ export async function openNewChat(page) {
     console.log('  ✓ 已选择视觉模型');
   }
 
-  // 3. 开启"深度思考"
+  // 3. 开启"深度思考" — 点击后验证 aria-pressed=true
   const deepThinkBtn = page.locator('span:has-text("深度思考"), button:has-text("深度思考"), [class*="deep-think"]');
   if (await deepThinkBtn.isVisible({ timeout: 3_000 }).catch(() => false)) {
     await deepThinkBtn.click();
     await sleep(1500);
-    console.log('  ✓ 已开启深度思考');
+    // 验证深度思考已激活：aria-pressed 应为 true
+    const pressed = await deepThinkBtn.getAttribute('aria-pressed').catch(() => null);
+    if (pressed === 'true') {
+      console.log('  ✓ 已开启深度思考 (aria-pressed=true)');
+    } else {
+      // 有些按钮可能用 aria-checked 或 class 表示状态
+      console.log('  ⚠ 深度思考已点击，但 aria-pressed 未确认激活');
+    }
   }
 }
 
@@ -92,11 +99,23 @@ export async function sendPrompt(page, prompt) {
     'button[aria-label*="Send"], button[aria-label*="发送"], div[role="button"][aria-label*="Send"], div[role="button"][aria-label*="发送"]'
   );
 
+  let sent = false;
   if (await sendBtn.isVisible({ timeout: 2_000 }).catch(() => false)) {
     await sendBtn.click();
+    sent = true;
   } else {
     // fallback: 用键盘快捷键发送
     await page.keyboard.press('Meta+Enter');
+    sent = true;
+  }
+
+  // 验证消息已发送：等待 textarea 清空
+  if (sent) {
+    await sleep(1000);
+    const textareaContent = await page.locator('textarea').first().inputValue().catch(() => '');
+    if (textareaContent.length > 0) {
+      console.log('  ⚠ 发送后 textarea 未清空，消息可能未发出');
+    }
   }
 }
 
@@ -127,6 +146,12 @@ export async function waitForResponse(page) {
       'span:has-text("思考中"), span:has-text("Thinking"), [class*="thinking"]'
     );
     const isThinking = await thinkingIndicator.isVisible({ timeout: 300 }).catch(() => false);
+
+    // 检查"已深度思考"（思考完成但回复还在生成）
+    const thoughtDone = page.locator(
+      'span:has-text("已深度思考"), span:has-text("思考完成")'
+    );
+    const isThoughtDone = await thoughtDone.isVisible({ timeout: 300 }).catch(() => false);
 
     if (isGenerating || isThinking) {
       stableCount = 0;
