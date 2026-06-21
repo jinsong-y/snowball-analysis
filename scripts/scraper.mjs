@@ -19,7 +19,7 @@ export function cleanStockName(rawName) {
   // 提取连续的中文字符序列（至少2个），取最长的
   const matches = rawName.match(/[一-鿿]{2,}/g);
   if (matches && matches.length > 0) {
-    // 返回最长的中文片段，或第一个合理的（2-8字的股票名）
+    // 返回最长的中文片段，或第一个合理的（2-10字的股票名）
     const reasonable = matches.filter(m => m.length >= 2 && m.length <= 10);
     return reasonable.length > 0 ? reasonable[0] : matches[0];
   }
@@ -36,6 +36,7 @@ export async function scrapeHotStocks(page) {
   await sleep(3000);
 
   // 等待页面加载完成，提取所有包含 /S/ 链接的股票数据
+  // 注意：page.evaluate 内部不能调用外部函数，只能用浏览器原生 API
   let stocks = await page.evaluate(() => {
     const results = [];
 
@@ -47,8 +48,7 @@ export async function scrapeHotStocks(page) {
         const href = link.getAttribute('href');
         const code = href.match(/\/S\/([A-Z]{2}\d+)/)?.[1];
         const nameEl = row.querySelector('[class*="name"], td:nth-child(2), .stock-name');
-        const rawName = nameEl?.textContent?.trim() || link.textContent?.trim() || '';
-        const name = cleanStockName(rawName);
+        const name = nameEl?.textContent?.trim() || link.textContent?.trim() || '';
         if (code && name) {
           results.push({ code, name, url: `https://xueqiu.com${href}` });
         }
@@ -64,8 +64,7 @@ export async function scrapeHotStocks(page) {
         const code = href.match(/\/S\/([A-Z]{2}\d+)/)?.[1];
         if (code && !seen.has(code)) {
           seen.add(code);
-          const rawName = link.textContent?.trim() || '';
-          const name = cleanStockName(rawName);
+          const name = link.textContent?.trim() || '';
           results.push({ code, name, url: `https://xueqiu.com${href}` });
         }
       }
@@ -100,13 +99,19 @@ export async function scrapeHotStocks(page) {
     }
   }
 
-  // 去重并取前 N
+  // 去重、清理名称、取前 N
   const seen = new Set();
-  stocks = stocks.filter(s => {
-    if (seen.has(s.code)) return false;
-    seen.add(s.code);
-    return true;
-  }).slice(0, XUEQIU.topN);
+  stocks = stocks
+    .filter(s => {
+      if (seen.has(s.code)) return false;
+      seen.add(s.code);
+      return true;
+    })
+    .map(s => ({
+      ...s,
+      name: cleanStockName(s.name), // 在 Node.js 上下文中清理名称
+    }))
+    .slice(0, XUEQIU.topN);
 
   return stocks;
 }

@@ -72,8 +72,8 @@ export async function screenshotStock(page, stock, index, date) {
   // --- 导航到股票页面 ---
   try {
     console.log(`  打开: ${stock.url}`);
-    await page.goto(stock.url, { waitUntil: 'networkidle', timeout: 30_000 });
-    await sleep(4000);
+    await page.goto(stock.url, { waitUntil: 'domcontentloaded', timeout: 20_000 });
+    await sleep(5000);  // 等待图表渲染
   } catch (err) {
     console.log(`  页面加载超时，尝试继续: ${err.message}`);
     await sleep(3000);
@@ -114,7 +114,7 @@ export async function screenshotStock(page, stock, index, date) {
       } else {
         console.log('  未找到周K按钮，尝试通过URL切换...');
         const weekUrl = stock.url + (stock.url.includes('?') ? '&' : '?') + 'period=week';
-        await page.goto(weekUrl, { waitUntil: 'networkidle', timeout: 30_000 });
+        await page.goto(weekUrl, { waitUntil: 'domcontentloaded', timeout: 20_000 });
         await sleep(5000);
       }
     }
