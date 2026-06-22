@@ -209,25 +209,6 @@ export async function waitForResponse(page, config) {
 // 5. extractResponse — 提取最后一条 AI 回复的完整文本
 // -----------------------------------------------------------
 export async function extractResponse(page) {
-  // 调试：打印页面和 DOM 状态
-  const debug = await page.evaluate(() => {
-    const md = document.querySelectorAll('.ds-assistant-message-main-content');
-    const msgs = document.querySelectorAll('div.ds-message');
-    const allMd = document.querySelectorAll('[class*="ds-markdown"]');
-    const textarea = document.querySelector('textarea');
-    return {
-      url: window.location.href,
-      title: document.title,
-      hasTextarea: !!textarea,
-      textareaPlaceholder: textarea?.placeholder,
-      bodyTextLength: document.body?.innerText?.length || 0,
-      assistantMainContent: [...md].map(el => ({ text: el.innerText?.trim()?.substring(0, 100), len: el.innerText?.trim()?.length })),
-      dsMessages: [...msgs].map(el => ({ text: el.innerText?.trim()?.substring(0, 100), len: el.innerText?.trim()?.length })),
-      markdownBlocks: [...allMd].length,
-    };
-  });
-  console.log('  [DEBUG] 页面状态:', JSON.stringify(debug, null, 2));
-
   const text = await extractResponseText(page);
   if (!text) {
     throw new Error('未能从 DeepSeek 页面提取到 AI 回复内容');
@@ -322,9 +303,49 @@ export async function analyzeStock(page, stock, screenshots) {
     // 5. 等待回复完成（深度思考模式可能需要较长时间）
     await waitForResponse(page);
 
-    // 6. 等待 DOM 完全渲染后提取回复
-    await sleep(3000);
-    const response = await extractResponse(page);
+    // 6. 等待最终回复完成
+    //    ds-assistant-message-main-content 在 AI 开始生成时就出现，内容流式增长
+    //    需要等文本长度稳定（连续 3 次无变化）才算完成
+    let response = '';
+    let stableCount = 0;
+    let lastLen = 0;
+
+    for (let wait = 0; wait < 20; wait++) {
+      await sleep(3000);
+      const finalResponse = await page.evaluate(() => {
+        const els = document.querySelectorAll('.ds-assistant-message-main-content');
+        if (els.length > 0) {
+          const text = els[els.length - 1].innerText?.trim();
+          return text && text.length > 0 ? text : '';
+        }
+        return '';
+      });
+
+      if (finalResponse.length > 0) {
+        if (finalResponse.length === lastLen) {
+          stableCount++;
+          if (stableCount >= 3) {
+            response = finalResponse;
+            console.log(`  ✓ 最终回复完成（${finalResponse.length} 字，长度稳定）`);
+            break;
+          }
+        } else {
+          stableCount = 0;
+        }
+        lastLen = finalResponse.length;
+        if (wait % 2 === 0) {
+          console.log(`  ... 回复生成中 (${finalResponse.length} 字)...`);
+        }
+      } else {
+        console.log(`  ... 等待回复元素出现 (${(wait + 1) * 3}s)...`);
+      }
+    }
+
+    // fallback: 从 ds-message 提取
+    if (!response) {
+      console.log('  ⚠ 未检测到最终回复，从 ds-message 提取');
+      response = await extractResponse(page);
+    }
     lastResponse = response;
 
     // 7. 检测回复质量
