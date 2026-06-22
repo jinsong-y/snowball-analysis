@@ -96,18 +96,31 @@ export async function sendPrompt(page, prompt) {
   }
 
   for (let attempt = 1; attempt <= MAX_SEND_RETRIES; attempt++) {
-    // 用 evaluate + nativeInputValueSetter 触发 React 状态更新
+    // 点击输入框获取焦点
     await textarea.first().click();
     await sleep(300);
 
-    await textarea.first().evaluate((el, text) => {
-      const setter = Object.getOwnPropertyDescriptor(
-        HTMLTextAreaElement.prototype, 'value'
-      ).set;
-      setter.call(el, text);
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-    }, prompt);
-    await sleep(500);
+    // 清空现有内容
+    await page.keyboard.press('Meta+A');
+    await page.keyboard.press('Backspace');
+    await sleep(200);
+
+    // 用 insertText 一次性插入全部文本（触发 input 事件，兼容 React）
+    await page.keyboard.insertText(prompt);
+    await sleep(800);
+
+    // 验证内容已填入
+    const inputVal = await textarea.first().inputValue().catch(() => '');
+    if (inputVal.length === 0) {
+      console.log(`  ⚠ insertText 未填入内容，尝试 evaluate 方式 (第 ${attempt} 次)`);
+      await textarea.first().evaluate((el, text) => {
+        const setter = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set;
+        setter.call(el, text);
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+      }, prompt);
+      await sleep(500);
+    }
 
     // 点击发送按钮
     const sendBtn = page.locator('div[role="button"].ds-button--primary.ds-button--filled.ds-button--circle');
@@ -123,15 +136,12 @@ export async function sendPrompt(page, prompt) {
     // 等待发送确认
     await sleep(1000);
 
-    // 检查确认条件（任一满足即成功）
+    // 检查确认条件：textarea 从有内容变为空 = 消息已发出
     const textareaContent = await textarea.first().inputValue().catch(() => '');
     const textareaCleared = textareaContent.length === 0;
 
-    const btnClass = await sendBtn.getAttribute('class').catch(() => '');
-    const buttonDisabled = btnClass.includes('ds-button--disabled');
-
-    if (textareaCleared || buttonDisabled) {
-      console.log('  ✓ 发送确认成功');
+    if (textareaCleared) {
+      console.log('  ✓ 发送确认成功（textarea 已清空）');
       return;
     }
 
@@ -199,6 +209,25 @@ export async function waitForResponse(page, config) {
 // 5. extractResponse — 提取最后一条 AI 回复的完整文本
 // -----------------------------------------------------------
 export async function extractResponse(page) {
+  // 调试：打印页面和 DOM 状态
+  const debug = await page.evaluate(() => {
+    const md = document.querySelectorAll('.ds-assistant-message-main-content');
+    const msgs = document.querySelectorAll('div.ds-message');
+    const allMd = document.querySelectorAll('[class*="ds-markdown"]');
+    const textarea = document.querySelector('textarea');
+    return {
+      url: window.location.href,
+      title: document.title,
+      hasTextarea: !!textarea,
+      textareaPlaceholder: textarea?.placeholder,
+      bodyTextLength: document.body?.innerText?.length || 0,
+      assistantMainContent: [...md].map(el => ({ text: el.innerText?.trim()?.substring(0, 100), len: el.innerText?.trim()?.length })),
+      dsMessages: [...msgs].map(el => ({ text: el.innerText?.trim()?.substring(0, 100), len: el.innerText?.trim()?.length })),
+      markdownBlocks: [...allMd].length,
+    };
+  });
+  console.log('  [DEBUG] 页面状态:', JSON.stringify(debug, null, 2));
+
   const text = await extractResponseText(page);
   if (!text) {
     throw new Error('未能从 DeepSeek 页面提取到 AI 回复内容');
@@ -293,7 +322,8 @@ export async function analyzeStock(page, stock, screenshots) {
     // 5. 等待回复完成（深度思考模式可能需要较长时间）
     await waitForResponse(page);
 
-    // 6. 提取回复
+    // 6. 等待 DOM 完全渲染后提取回复
+    await sleep(3000);
     const response = await extractResponse(page);
     lastResponse = response;
 
